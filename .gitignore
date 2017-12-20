@@ -1,0 +1,4 @@
+config/backuprestore.conf
+__pycache__
+*.pyc
+.idea/*

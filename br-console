@@ -1,0 +1,89 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+import sys
+import getopt
+import lib.modul
+import lib.config
+
+SPACER = 40
+
+COLOR_HEAD  = "\033[1m"
+COLOR_INPUT = "\033[94m"
+COLOR_WARN  = "\033[91m"
+COLOR_CLEAR = "\033[0m\033[2m"
+
+# Main menu
+def main_menu():
+    print(SPACER*"-")
+    print("%sPlease choose the menu you want to start:%s"%(COLOR_HEAD,COLOR_CLEAR))
+    print("b) Backup")
+    print("r) Restore")
+    print("\nq) Quit")
+    exec_menu(prompt())
+    return
+
+# Execute menu
+def exec_menu(choice):
+    ch = choice.lower()
+    if ch == '':
+        menu_actions['main_menu']()
+    else:
+        try:
+            menu_actions[ch]()
+        except KeyError:
+            print("%sInvalid selection, please try again.%s\n"%(COLOR_WARN,COLOR_CLEAR))
+            menu_actions['main_menu']()
+    return
+def prompt():
+    return input("%s  >>  %s"%(COLOR_INPUT,COLOR_CLEAR))
+
+def backup():
+    print(SPACER*"-")
+    print("%srunning backup%s:"%(COLOR_HEAD,COLOR_CLEAR))
+    lib.modul.backup(lib.config.CONFIG)
+    main_menu()
+    return
+
+def restore():
+    print(SPACER*"-")
+    print("%sselect date to restore%s"%(COLOR_HEAD,COLOR_CLEAR))
+    print("full")
+    lib.modul.restore(lib.config.CONFIG,prompt())
+    main_menu()
+    return
+
+# Back to main menu
+def back():
+    menu_actions['main_menu']()
+
+# Exit program
+def exit():
+    sys.exit()
+# Menu definition
+menu_actions = {
+    'main_menu': main_menu,
+    'b': backup,
+    'r': restore,
+    'q': exit,
+}
+
+# Main Program
+if __name__ == "__main__":
+    config_path = None
+    try:
+        opts, args = getopt.getopt(sys.argv[1:],"hc",["config="])
+        for opt, arg in opts:
+            if opt == '-h':
+                print("br-console -c <configfile>")
+                sys.exit()
+            elif opt in ("-c", "--config"):
+                config_path = arg
+    except getopt.GetoptError:
+        print("Error with input\nbr-console -c <configfile>")
+    if config_path is None:
+        config_path = lib.config.check_possible_path()
+    print("%sWelcome,%s"%(COLOR_HEAD,COLOR_CLEAR))
+    print("load config from: %s\n" % config_path)
+    lib.config.init(config_path)
+    # Launch main menu
+    main_menu()

@@ -1,0 +1,20 @@
+[remote]
+host = "genofire@firestore.firenet.sum7.eu"
+path = "/tank/genofire/backup/test"
+
+[time]
+# timestemp to backup -> current only 'full' supported
+type = "full"
+
+[modules]
+
+# directories modul
+directories = [ "/tmp/a"]
+
+# a failed modul -> did not exists
+notFoundDummy = "nil"
+
+[modules.pgsqlreplica]
+# pgsql replica modul
+host = "localhost"
+user = "postgres"
