@@ -7,7 +7,7 @@ Here should be created a little modular backup and restore software.
 
 ## Installation
 ```
-git clone https://github.com/genofire/backuprestore /opt/backuprestore
+git clone http://195.37.176.146:7990/scm/binf/backuprestore.git
 ln -s /opt/backuprestore/br-console /usr/local/bin/br-console
 ln -s /opt/backuprestore/br-backup /usr/local/bin/br-backup
 ```
@@ -41,9 +41,12 @@ directories = [ "/tmp/a"]
 notFoundDummy = "nil"
 
 [modules.pgsqldump]
-# pgsql dumpall modul
+# pgsql dump modul
 host = "localhost"
 user = "postgres"
+databases.0="biodiversity_fische"
+databases.1="biodiversity_muscheln"
+databases.2="biodiversity_saeugetiere"
 
 [modules.pgsqlreplica]
 # pgsql replica modul
