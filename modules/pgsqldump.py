@@ -55,7 +55,7 @@ def backup(remote, timemode, params):
 
 def execute_cmd_command(databasename, full_path, params, remote, result):
     try:
-        cmd = ["pg_dumpall"]
+        cmd = ["pg_dump"]
         if 'user' in params:
             cmd.append("-U")
             cmd.append(params['user'])
